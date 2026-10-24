@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>About | StayWise</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+<div class="logo">StayWise</div>
+
+<div class="nav-links">
+<a href="/home">Home</a>
+<a href="/about">About</a>
+<a href="/predict-page">Predict</a>
+<a href="/support">Support</a>
+<a href="/">Logout</a>
+</div>
+
+</div>
+
+<div class="main-container">
+
+<div class="glass-card">
+
+<h2 class="section-title">About StayWise</h2>
+
+<p style="margin-top:15px;color:#444;line-height:1.6">
+
+StayWise is a machine learning based customer churn prediction platform
+developed using Python, Flask and Random Forest classification model.
+
+The system analyzes customer attributes such as tenure,
+monthly charges, service usage and contract details
+to estimate churn probability.
+
+Organizations can use this insight to design proactive
+customer retention strategies and reduce revenue loss.
+
+</p>
+
+</div>
+
+
+<div class="team-section">
+
+<h2 class="section-title">Project Team</h2>
+
+<div class="team-grid">
+
+<div class="team-card">
+
+<img src="{{ url_for('static', filename='assets/pooja.png') }}">
+
+<h3>Pooja Sonne</h3>
+
+<p class="role">Data Engineer</p>
+
+<p>
+Responsible for dataset preparation, feature engineering
+and ensuring structured data pipeline for the ML model.
+</p>
+
+</div>
+
+
+<div class="team-card">
+
+<img src="{{ url_for('static', filename='assets/santoshi.png') }}">
+
+<h3>Santoshi Pawar</h3>
+
+<p class="role">ML Engineer</p>
+
+<p>
+Designed and trained the Random Forest churn prediction
+model and performed model evaluation.
+</p>
+
+</div>
+
+
+<div class="team-card">
+
+<img src="{{ url_for('static', filename='assets/abhijeet.png') }}">
+
+<h3>Abhijeet Dole</h3>
+
+<p class="role">Web Developer</p>
+
+<p>
+Implemented frontend interface and Flask backend
+integration for prediction system.
+</p>
+
+</div>
+
+
+<div class="team-card">
+
+<img src="{{ url_for('static', filename='assets/nominath.png') }}">
+
+<h3>Nominath Kuwar</h3>
+
+<p class="role">System Admin</p>
+
+<p>
+Handled deployment setup, environment configuration
+and system monitoring.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='assets/script.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home | StayWise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">StayWise</div>
+    <div class="nav-links">
+        <a href="/home">Home</a>
+        <a href="/about">About</a>
+        <a href="/predict-page">Predict</a>
+        <a href="/support">Support</a>
+        <a href="/">Logout</a>
+    </div>
+</div>
+
+<div class="main-container">
+
+<div class="glass-card hero-section">
+
+<div class="hero-text">
+
+<h1>Smart Customer Retention System</h1>
+
+<p>
+Machine learning driven churn prediction platform designed to help
+organizations identify high-risk customers and take preventive actions.
+</p>
+
+<a href="/predict-page" class="btn-primary">Start Prediction</a>
+
+</div>
+
+<div class="hero-image">
+
+<img src="{{ url_for('static', filename='assets/home_img.png') }}" width="380">
+
+</div>
+
+</div>
+
+<div class="features-grid">
+
+<div class="glass-card feature-card">
+<h3>Predict Customer Behavior</h3>
+<p>
+Use trained machine learning models to detect possible churn patterns
+in customer data.
+</p>
+</div>
+
+<div class="glass-card feature-card">
+<h3>Prevent Revenue Loss</h3>
+<p>
+Identify customers at risk and apply targeted retention strategies.
+</p>
+</div>
+
+<div class="glass-card feature-card">
+<h3>Actionable Insights</h3>
+<p>
+Generate intelligent recommendations based on churn probability scores.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='assets/script.js') }}"></script>
+
+</body>
+</html>
