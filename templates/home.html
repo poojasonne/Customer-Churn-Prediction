@@ -1,77 +1,190 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home | StayWise</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | StayWise - Intelligent Customer Churn Prediction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
 </head>
 <body>
 
 <div class="navbar">
-    <div class="logo">StayWise</div>
+    <a href="/home" class="logo-container">
+        <div class="logo-badge-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+        </div>
+        <span class="logo-text">StayWise</span>
+        <span class="logo-tag">ML v2.0</span>
+    </a>
     <div class="nav-links">
-        <a href="/home">Home</a>
-        <a href="/about">About</a>
+        <a href="/home" class="active">Home</a>
         <a href="/predict-page">Predict</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/about">About</a>
         <a href="/support">Support</a>
-        <a href="/">Logout</a>
+        <a href="/" class="nav-btn-logout">Logout</a>
     </div>
 </div>
 
 <div class="main-container">
 
-<div class="glass-card hero-section">
+    <!-- HERO SECTION WITH LIVE INTERACTIVE SIMULATOR (REPLACING OLD STATIC IMAGE) -->
+    <div class="hero-section glass-card">
+        
+        <div class="hero-text">
+            <div class="hero-pill">
+                <span class="pulse-dot"></span>
+                <span>Random Forest AI Pipeline Active</span>
+            </div>
 
-<div class="hero-text">
+            <h1>Predict Customer Churn <span class="highlight">Before It Happens</span></h1>
 
-<h1>Smart Customer Retention System</h1>
+            <p>
+                StayWise leverages supervised machine learning to detect behavioral patterns, assess subscriber attrition risks, and prescribe high-impact retention strategies in real time.
+            </p>
 
-<p>
-Machine learning driven churn prediction platform designed to help
-organizations identify high-risk customers and take preventive actions.
-</p>
+            <div class="hero-actions">
+                <a href="/predict-page" class="btn-primary">
+                    <span>Launch Predictor</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                <a href="/dashboard" class="btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <span>View Analytics</span>
+                </a>
+            </div>
+        </div>
 
-<a href="/predict-page" class="btn-primary">Start Prediction</a>
+        <!-- INTERACTIVE LIVE CHURN PREVIEW CARD (NO IMAGES USED) -->
+        <div class="hero-preview-box">
+            <div class="preview-header">
+                <div class="preview-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>Interactive Risk Simulator</span>
+                </div>
+                <span id="demoRiskBadge" class="pill-status churn" style="font-size:11px;">High Risk Alert</span>
+            </div>
+
+            <div class="risk-meter-container">
+                <div class="risk-meter-header">
+                    <span style="color:var(--text-secondary);font-size:12px;">Simulated Attrition Risk</span>
+                    <span id="demoRiskScore" style="font-weight:800;color:#fb7185;font-size:16px;">78.4%</span>
+                </div>
+                <div class="risk-progress-bar">
+                    <div id="demoProgressFill" class="risk-progress-fill" style="width:78.4%;"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:6px;">
+                    <span>Adjust Tenure: <strong id="demoTenureVal" style="color:var(--text-main);">4 Months</strong></span>
+                    <span>Monthly: <strong id="demoMonthlyVal" style="color:var(--text-main);">$95/mo</strong></span>
+                </div>
+                <input type="range" id="demoTenureSlider" min="1" max="72" value="4" oninput="updateInteractiveSimulator()" style="width:100%;accent-color:var(--primary);cursor:pointer;">
+            </div>
+
+            <div class="preview-metric-row">
+                <div class="preview-metric-box">
+                    <div class="preview-metric-label">Contract Type</div>
+                    <div id="demoContractLabel" class="preview-metric-val" style="font-size:14px;color:#cbd5e1;">Month-to-Month</div>
+                </div>
+                <div class="preview-metric-box">
+                    <div class="preview-metric-label">Retention Impact</div>
+                    <div id="demoActionLabel" class="preview-metric-val" style="font-size:14px;color:#38bdf8;">Offer Annual Plan</div>
+                </div>
+            </div>
+
+            <div style="text-align:center;font-size:11.5px;color:var(--text-muted);margin-top:6px;">
+                ⚡ Drag slider above to test real-time risk sensitivity
+            </div>
+        </div>
+
+    </div>
+
+    <!-- STATS BANNER -->
+    <div class="stats-banner">
+        <div class="stat-item">
+            <div class="stat-num">80.5%</div>
+            <div class="stat-label">Model Accuracy</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">9</div>
+            <div class="stat-label">Features Evaluated</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">&lt; 50ms</div>
+            <div class="stat-label">Inference Latency</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">SQLite</div>
+            <div class="stat-label">Continuous Logging</div>
+        </div>
+    </div>
+
+    <!-- FEATURES GRID -->
+    <h2 class="section-title">Core Retention Capabilities</h2>
+    <p class="section-subtitle">Engineered to transform customer attrition into proactive relationship building</p>
+
+    <div class="features-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+            </div>
+            <h3>Early Churn Detection</h3>
+            <p>
+                Detect micro-signals in contract length, billing frequency, and fiber optic usage before the customer initiates cancellation.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <h3>Revenue Protection</h3>
+            <p>
+                Prevent ARR loss by pinpointing high-value customer accounts on month-to-month terms that need proactive account manager outreach.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+            </div>
+            <h3>Prescriptive Action Playbooks</h3>
+            <p>
+                Receive automated, tailored recommendations for each customer profile (e.g., Tech Support bundles, Autopay discounts, Annual terms).
+            </p>
+        </div>
+
+    </div>
 
 </div>
 
-<div class="hero-image">
-
-<img src="{{ url_for('static', filename='assets/home_img.png') }}" width="380">
-
-</div>
-
-</div>
-
-<div class="features-grid">
-
-<div class="glass-card feature-card">
-<h3>Predict Customer Behavior</h3>
-<p>
-Use trained machine learning models to detect possible churn patterns
-in customer data.
-</p>
-</div>
-
-<div class="glass-card feature-card">
-<h3>Prevent Revenue Loss</h3>
-<p>
-Identify customers at risk and apply targeted retention strategies.
-</p>
-</div>
-
-<div class="glass-card feature-card">
-<h3>Actionable Insights</h3>
-<p>
-Generate intelligent recommendations based on churn probability scores.
-</p>
-</div>
-
-</div>
-
-</div>
+<footer class="site-footer">
+    <p>StayWise Customer Churn Prediction System &bull; Powered by Random Forest &amp; Flask</p>
+</footer>
 
 <script src="{{ url_for('static', filename='assets/script.js') }}"></script>
-
 </body>
 </html>

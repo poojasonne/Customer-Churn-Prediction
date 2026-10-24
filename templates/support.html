@@ -1,55 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Support | StayWise</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support & Helpdesk | StayWise</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
 </head>
 <body>
 
 <div class="navbar">
-    <div class="logo">StayWise</div>
+    <a href="/home" class="logo-container">
+        <div class="logo-badge-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+        </div>
+        <span class="logo-text">StayWise</span>
+        <span class="logo-tag">ML v2.0</span>
+    </a>
     <div class="nav-links">
         <a href="/home">Home</a>
-        <a href="/about">About</a>
         <a href="/predict-page">Predict</a>
-        <a href="/support">Support</a>
-        <a href="/">Logout</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/about">About</a>
+        <a href="/support" class="active">Support</a>
+        <a href="/" class="nav-btn-logout">Logout</a>
     </div>
 </div>
 
 <div class="main-container">
 
-    <div class="glass-card" style="max-width:700px;margin:auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
 
-        <h2>Contact Support</h2>
-
-        <form onsubmit="return submitSupport(event)">
-
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" id="name" required>
+        <!-- LEFT SIDE: CONTACT FORM (FIXED MISSING SUBJECT ID) -->
+        <div class="glass-card">
+            <div class="hero-pill" style="margin-bottom:12px;">
+                <span>Technical Helpdesk</span>
             </div>
+            <h2 class="section-title" style="font-size:26px;">Contact Support</h2>
+            <p class="section-subtitle">Need help with model integration, dataset schema, or prediction thresholds?</p>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="email" required>
+            <form onsubmit="return submitSupport(event)">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Work Email</label>
+                    <input type="email" id="email" placeholder="name@organization.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Subject / Topic</label>
+                    <select id="subject" required>
+                        <option value="">Select support topic</option>
+                        <option value="model">ML Model &amp; Prediction Accuracy</option>
+                        <option value="api">Flask API Integration &amp; Webhooks</option>
+                        <option value="database">Database &amp; Audit Logs Inquiry</option>
+                        <option value="feature">Feature Request / Feedback</option>
+                        <option value="other">General Inquiries</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Message Details</label>
+                    <textarea id="message" rows="4" placeholder="Describe your question or issue in detail..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:10px;">
+                    <span>Submit Support Ticket</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+
+            </form>
+
+            <div id="supportMsg"></div>
+
+        </div>
+
+        <!-- RIGHT SIDE: INTERACTIVE FAQ ACCORDION -->
+        <div>
+            <div class="hero-pill" style="margin-bottom:12px;">
+                <span>Knowledge Base</span>
             </div>
+            <h2 class="section-title" style="font-size:26px;">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Quick answers to common questions about the churn model</p>
 
-            <div class="form-group">
-                <label>Message</label>
-                <textarea id="message" rows="5" required></textarea>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+
+                <div class="glass-card" style="padding:20px;cursor:pointer;" onclick="toggleFaq(this)">
+                    <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:15px;color:var(--text-main);">
+                        <span>What is the churn probability threshold?</span>
+                        <span class="faq-icon" style="color:var(--cyan);font-size:18px;">+</span>
+                    </div>
+                    <div class="faq-body" style="display:none;margin-top:12px;font-size:13.5px;color:var(--text-secondary);line-height:1.6;border-top:1px solid var(--border-subtle);padding-top:12px;">
+                        By default, any probability score &ge; 50.0% is classified as "Likely to Churn" (Result = 1). In production settings, teams often customize this threshold down to 35% to trigger early warning outreach campaigns.
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding:20px;cursor:pointer;" onclick="toggleFaq(this)">
+                    <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:15px;color:var(--text-main);">
+                        <span>How are predictions recorded in SQLite?</span>
+                        <span class="faq-icon" style="color:var(--cyan);font-size:18px;">+</span>
+                    </div>
+                    <div class="faq-body" style="display:none;margin-top:12px;font-size:13.5px;color:var(--text-secondary);line-height:1.6;border-top:1px solid var(--border-subtle);padding-top:12px;">
+                        Every inference made via the `/predict` route is automatically logged into `predictions.db` along with customer tenure, monthly spend, probability %, and timestamp for live historical auditing.
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding:20px;cursor:pointer;" onclick="toggleFaq(this)">
+                    <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:15px;color:var(--text-main);">
+                        <span>Can I train the model with fresh data?</span>
+                        <span class="faq-icon" style="color:var(--cyan);font-size:18px;">+</span>
+                    </div>
+                    <div class="faq-body" style="display:none;margin-top:12px;font-size:13.5px;color:var(--text-secondary);line-height:1.6;border-top:1px solid var(--border-subtle);padding-top:12px;">
+                        Yes! You can add updated records to `data/cleaned2.csv` and run `python ml/train_model.py`. The script fits the pipeline with 200 random forest estimators and exports the new `model.pkl`.
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding:20px;cursor:pointer;" onclick="toggleFaq(this)">
+                    <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:15px;color:var(--text-main);">
+                        <span>What are the default login credentials?</span>
+                        <span class="faq-icon" style="color:var(--cyan);font-size:18px;">+</span>
+                    </div>
+                    <div class="faq-body" style="display:none;margin-top:12px;font-size:13.5px;color:var(--text-secondary);line-height:1.6;border-top:1px solid var(--border-subtle);padding-top:12px;">
+                        For demonstration and evaluation, the portal uses `admin@staywise.com` and password `123456`, or you can use the instant "Guest Access" button on the login screen.
+                    </div>
+                </div>
+
             </div>
-
-            <button class="btn-primary">Send</button>
-
-        </form>
-
-        <div id="supportMsg" style="margin-top:20px;"></div>
+        </div>
 
     </div>
 
 </div>
+
+<footer class="site-footer">
+    <p>StayWise Customer Churn Prediction System &bull; Dedicated Support Operations</p>
+</footer>
 
 <script src="{{ url_for('static', filename='assets/script.js') }}"></script>
 </body>

@@ -1,104 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Prediction Result | StayWise</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Analysis | StayWise</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
 <div class="navbar">
-
-<div class="logo">StayWise</div>
-
-<div class="nav-links">
-<a href="/home">Home</a>
-<a href="/about">About</a>
-<a href="/predict-page">Predict</a>
-<a href="/dashboard">Dashboard</a>
-<a href="/support">Support</a>
-<a href="/">Logout</a>
-</div>
-
+    <a href="/home" class="logo-container">
+        <div class="logo-badge-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+        </div>
+        <span class="logo-text">StayWise</span>
+        <span class="logo-tag">ML v2.0</span>
+    </a>
+    <div class="nav-links">
+        <a href="/home">Home</a>
+        <a href="/predict-page">Predict</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/about">About</a>
+        <a href="/support">Support</a>
+        <a href="/" class="nav-btn-logout">Logout</a>
+    </div>
 </div>
 
 <div class="main-container">
 
-<div class="glass-card result-card">
+    <div class="glass-card result-card">
 
-<h2 class="section-title">Prediction Result</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+            <div>
+                <div class="hero-pill" style="margin-bottom:6px;">
+                    <span>Inference Assessment</span>
+                </div>
+                <h2 class="section-title">Customer Retention Report</h2>
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button type="button" class="btn-secondary btn-sm" onclick="window.print()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    <span>Print Report</span>
+                </button>
+                <a href="/predict-page" class="btn-primary btn-sm">
+                    <span>New Prediction</span>
+                </a>
+            </div>
+        </div>
 
-<div class="gauge-box">
-<canvas id="gaugeChart"></canvas>
+        <!-- MAIN RESULT HERO SECTION -->
+        <div class="result-hero">
+            
+            <!-- GAUGE CHART WITH CENTER STAT -->
+            <div class="gauge-container">
+                <canvas id="gaugeChart"></canvas>
+                <div class="gauge-center-stat">
+                    <div id="centerProbability" class="gauge-percent">0%</div>
+                    <div class="gauge-label">Churn Risk</div>
+                </div>
+            </div>
+
+            <!-- RESULT DETAILS & BADGES -->
+            <div>
+                <div id="riskBadgeContainer">
+                    <span class="risk-badge critical">Calculating Risk...</span>
+                </div>
+
+                <h3 id="resultTitle" style="font-size:24px;font-weight:800;margin-bottom:8px;">
+                    Assessment in progress...
+                </h3>
+
+                <p id="resultDescription" style="color:var(--text-secondary);font-size:14.5px;line-height:1.6;margin-bottom:20px;">
+                    Our trained Random Forest model has analyzed the submitted attributes against historical customer churn behaviors.
+                </p>
+
+                <!-- EVALUATED INPUT ATTRIBUTES SUMMARY -->
+                <div id="inputSummaryGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div style="background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;border:1px solid var(--border-subtle);">
+                        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Tenure</div>
+                        <div id="summaryTenure" style="font-weight:700;font-size:14px;color:var(--text-main);">--</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;border:1px solid var(--border-subtle);">
+                        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Monthly Spend</div>
+                        <div id="summaryMonthly" style="font-weight:700;font-size:14px;color:var(--text-main);">--</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- KEY RISK DRIVERS IDENTIFIED -->
+        <div style="margin-top:28px;">
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Key Behavioral Factors &amp; Drivers</span>
+            </h3>
+
+            <div id="factorsList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+
+        <!-- ACTIONABLE RETENTION PLAYBOOK -->
+        <div class="recommendations-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <h3 style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>Recommended Retention Action Plan</span>
+                </h3>
+                <span class="logo-tag">High Priority</span>
+            </div>
+
+            <div id="recommendationsList">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+
+        <!-- INTERACTIVE WHAT-IF SCENARIO SIMULATOR -->
+        <div style="margin-top:28px;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(56,189,248,0.04));border:1px solid rgba(99,102,241,0.25);border-radius:16px;padding:22px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                <div style="font-weight:700;font-size:15px;color:var(--text-main);display:flex;align-items:center;gap:8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>What-If Retention Countermeasure Simulator</span>
+                </div>
+                <span style="font-size:12px;color:var(--cyan);">Test impact on this customer</span>
+            </div>
+
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">
+                Simulate offering proactive retention incentives and observe how churn probability drops:
+            </p>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="btn-secondary btn-sm" onclick="simulateCountermeasure('contract')" style="font-size:12.5px;">
+                    🎁 Apply 1-Year Contract Discount (-35% Churn)
+                </button>
+                <button type="button" class="btn-secondary btn-sm" onclick="simulateCountermeasure('techsupport')" style="font-size:12.5px;">
+                    🛡️ Bundle Free Tech Support (-20% Churn)
+                </button>
+                <button type="button" class="btn-secondary btn-sm" onclick="simulateCountermeasure('autopay')" style="font-size:12.5px;">
+                    💳 Setup Autopay Incentive (-12% Churn)
+                </button>
+                <button type="button" class="btn-secondary btn-sm" onclick="resetCountermeasure()" style="font-size:12.5px;color:var(--rose);">
+                    ↺ Reset Simulation
+                </button>
+            </div>
+
+            <div id="simFeedback" style="margin-top:12px;font-size:13px;display:none;"></div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:20px;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:12px;">
+            <a href="/predict-page" class="btn-secondary">
+                &larr; Calculate Another Profile
+            </a>
+            <a href="/dashboard" class="btn-primary">
+                <span>Go to Analytics Dashboard</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+        </div>
+
+    </div>
+
 </div>
 
-<div id="resultText"></div>
+<footer class="site-footer">
+    <p>StayWise Customer Churn Prediction System &bull; Real-time AI Analysis</p>
+</footer>
 
-<a href="/predict-page" class="btn-primary">Predict Again</a>
-
-</div>
-
-</div>
-
+<script src="{{ url_for('static', filename='assets/script.js') }}"></script>
 <script>
-
-document.addEventListener("DOMContentLoaded", function(){
-
-const score = sessionStorage.getItem("predictionScore")
-
-if(!score) return
-
-const probability = parseFloat(score)*100
-const remain = 100 - probability
-
-const ctx = document.getElementById("gaugeChart")
-
-new Chart(ctx,{
-
-type:"doughnut",
-
-data:{
-labels:["Churn","Retention"],
-datasets:[{
-data:[probability,remain],
-backgroundColor:["#ff4d4d","#00c897"]
-}]
-},
-
-options:{
-
-cutout:"70%",
-
-animation:{
-animateRotate:true,
-duration:1800
-},
-
-plugins:{
-legend:{display:false}
-}
-
-}
-
-})
-
-const result = probability >=50 ? "Customer Likely To Churn" : "Customer Stable"
-
-document.getElementById("resultText").innerHTML = `
-<h3 style="margin-top:20px">Churn Probability: ${probability.toFixed(1)}%</h3>
-<p>${result}</p>
-`
-
-})
-
+    document.addEventListener("DOMContentLoaded", initResultPage);
 </script>
-
 </body>
 </html>
